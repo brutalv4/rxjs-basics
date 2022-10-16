@@ -1,4 +1,4 @@
-(function ({ interval, operators: { scan, mapTo, filter } }) {
+(function ({ interval, operators: { scan, mapTo, filter, tap } }) {
     // elements
     const countdownEl = document.querySelector('#countdown');
     const messageEl = document.querySelector('#message');
@@ -18,6 +18,7 @@
         .pipe(
             mapTo(1),
             scan((accumulator, one) => accumulator - one, 10),
+            tap(console.log),
             filter(value => value >= 0)
         )
         .subscribe(render);
