@@ -1,15 +1,15 @@
-(function ({ interval, operators: { scan, mapTo, filter, tap } }) {
+(function ({ interval, operators: { scan, mapTo, takeWhile, tap } }) {
     // elements
     const countdownEl = document.querySelector('#countdown');
     const messageEl = document.querySelector('#message');
 
     // helpers
-    function render(count) {
+    function updateCounter(count) {
         countdownEl.innerHTML = count;
+    }
 
-        if (count === 0) {
-            messageEl.innerHTML = 'Liftoff!';
-        }
+    function updateMessage() {
+        messageEl.innerHTML = 'Liftoff!';
     }
 
     // streams
@@ -19,7 +19,7 @@
             mapTo(1),
             scan((accumulator, one) => accumulator - one, 10),
             tap(console.log),
-            filter(value => value >= 0)
+            takeWhile(value => value > 0, true)
         )
-        .subscribe(render);
+        .subscribe({ next: updateCounter, complete: updateMessage });
 })(rxjs);
