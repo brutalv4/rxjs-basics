@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+            <input type="text" id="text" />
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({
+                fromEvent,
+                operators: { debounceTime, pluck, distinctUntilChanged },
+            }) {
+                // elements
+                const inputBox = document.querySelector('#text');
+
+                /*
+                 * 'debounceTime' emits the last emitted value from the source
+                 * after a pause, based on a duration you specify.
+                 * Example: only the last click event will be emitted after a 1 second pause
+                 */
+                const click$ = fromEvent(document, 'click');
+                click$.pipe(debounceTime(1000)).subscribe(console.log);
+
+                /* In this case when the user starts typing all values
+                 * will be ignored until they paused for at least 200ms,
+                 * at which point the last value will be emitted.
+                 */
+                const input$ = fromEvent(inputBox, 'keyup');
+                input$
+                    .pipe(
+                        debounceTime(200),
+                        // we could also use map here
+                        pluck('target', 'value'),
+                        /*
+                         * If the user types, then backspaces quickly, the same value could
+                         * be emitted twice in a row. Using distinctUntilChanged will prevent
+                         * this from happening.
+                         */
+                        distinctUntilChanged()
+                    )
+                    .subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
