@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+            <input type="text" id="text" />
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({
+                fromEvent,
+                operators: { throttleTime, pluck, distinctUntilChanged },
+            }) {
+                /*
+                 * throttleTime will emit the first value, then ignore
+                 * values for the specified duration. After that duration
+                 * has passed, the next value from the source will be
+                 * emitted, with the previous behavior repeated.
+                 */
+                const click$ = fromEvent(document, 'click');
+                click$.pipe(throttleTime(3000)).subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
