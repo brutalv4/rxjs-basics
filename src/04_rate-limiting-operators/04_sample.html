@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app"></div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({ fromEvent, interval, operators: { sample, map } }) {
+                const click$ = fromEvent(document, 'click');
+                const timer$ = interval(1000);
+                timer$
+                    .pipe(
+                        /*
+                         * The sample window can also be based off another stream.
+                         * For instance, in this example every time you click the
+                         * last value emitted by the timer$ observable will be emitted
+                         * by sample.
+                         */
+                        sample(click$)
+                    )
+                    .subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
