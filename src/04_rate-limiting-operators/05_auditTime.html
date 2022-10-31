@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app"></div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({ fromEvent, operators: { auditTime, map } }) {
+                const click$ = fromEvent(document, 'click');
+
+                click$
+                    .pipe(
+                        /*
+                         * auditTime will begin window when the source emits. Then,
+                         * once the window passes, the last emitted value
+                         * from the source will be emitted. For instance, in this
+                         * example if you click a 4s timer will be started.
+                         * At the end, the last click event during that window
+                         * will be emitted by auditTime. This is similar to the
+                         * behavior of throttleTime, if you were to pass in a config
+                         * to emit the value on the trailing edge.
+                         */
+                        auditTime(4000),
+                        /*
+                         * adding mapping to stackblitz example since logging
+                         * raw events is flaky
+                         */
+                        // @ts-ignore
+                        map(({ clientX, clientY }) => ({ clientX, clientY }))
+                    )
+                    .subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
