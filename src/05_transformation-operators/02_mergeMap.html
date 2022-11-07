@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app"></div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({
+                fromEvent,
+                operators: { map, mergeMap },
+                ajax: { ajax },
+            }) {
+                const click$ = fromEvent(document, 'click');
+                const coordinates$ = click$.pipe(
+                    map(event => ({
+                        x: event.clientX,
+                        y: event.clientY,
+                    }))
+                );
+
+                const coordinatesWithSave$ = coordinates$.pipe(
+                    /*
+                     * mergeMap is good for 'fire and forget' save request
+                     * you do not want to be cancelled. For instance, in this
+                     * example we are emulating a save of coordinates
+                     * anytime the user clicks on the page.
+                     */
+                    mergeMap(coords =>
+                        ajax.post(
+                            'https://www.mocky.io/v2/5185415ba171ea3a00704eed',
+                            coords
+                        )
+                    )
+                );
+
+                coordinatesWithSave$.subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
