@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+            <input id="text-input" />
+            <div id="typeahead-container"></div>
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({
+                fromEvent,
+                interval,
+                operators: {
+                    debounceTime,
+                    pluck,
+                    distinctUntilChanged,
+                    switchMap,
+                },
+                ajax: { ajax },
+            }) {
+                const BASE_URL = 'https://api.openbrewerydb.org/breweries';
+
+                //elems
+                const inputBox = document.getElementById('text-input');
+                const typeaheadContainer = document.getElementById(
+                    'typeahead-container'
+                );
+
+                // streams
+                const input$ = fromEvent(inputBox, 'keyup');
+
+                input$
+                    .pipe(
+                        debounceTime(200),
+                        pluck('target', 'value'),
+                        distinctUntilChanged(),
+                        /*
+                         * switchMap is perfect for GET requests, as you do
+                         * not normally care about the previous request
+                         * to the same URL if another has fired. For instance,
+                         * in this example if the user continues typing
+                         * and the previuos request has not returned,
+                         * switchMap will go ahead and cancel it and only
+                         * the current request will be considered.
+                         */
+                        switchMap(searchTerm =>
+                            ajax.getJSON(`${BASE_URL}?by_name=${searchTerm}`)
+                        )
+                    )
+                    .subscribe(response => {
+                        // update ui
+                        typeaheadContainer.innerHTML = response
+                            .map(b => b.name)
+                            .join('<br>');
+                    });
+            })(rxjs);
+        </script>
+    </body>
+</html>
