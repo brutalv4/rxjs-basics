@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+            <p>What is your favorite operator?</p>
+            <div class="radio-container">
+                <input
+                    id="mergeMap"
+                    type="radio"
+                    class="radio-option"
+                    name="operator"
+                    value="mergeMap"
+                />
+                <label for="mergeMap">mergeMap</label>
+            </div>
+            <div class="radio-container">
+                <input
+                    id="switchMap"
+                    type="radio"
+                    class="radio-option"
+                    name="operator"
+                    value="switchMap"
+                />
+                <label for="switchMap">switchMap</label>
+            </div>
+            <div class="radio-container">
+                <input
+                    id="concatMap"
+                    type="radio"
+                    class="radio-option"
+                    name="operator"
+                    value="concatMap"
+                />
+                <label for="concatMap">concatMap</label>
+            </div>
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({ of, fromEvent, operators: { concatMap, delay } }) {
+                const saveAnswer = answer => {
+                    // simulate delayed request
+                    return of(`Saved: ${answer}`).pipe(delay(1500));
+                };
+
+                // elems
+                const radioButtons = document.querySelectorAll('.radio-option');
+
+                // streams
+                const answerChange$ = fromEvent(radioButtons, 'click');
+
+                answerChange$
+                    .pipe(
+                        /*
+                         * concatMap can be useful if you need to queue
+                         * requests client side. For instance, in this example
+                         * we are emulating save requests on a quiz, ensuring
+                         * order remains in tact by not initiating the next
+                         * request until the previous completes. Be careful though,
+                         * as long running inner observables could cause backups.
+                         */
+                        concatMap(event => saveAnswer(event.target.value))
+                    )
+                    .subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
