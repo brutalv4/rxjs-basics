@@ -99,7 +99,7 @@ body {
     margin-top: 10px;
 }
 
-input {
+input[type=text] {
   margin: 20px auto;
   border-radius: 4px;
   height:20px;
@@ -107,4 +107,14 @@ input {
   padding: 5px;
   border: 1px solid black;
   font-size:16px;
+}
+
+p {
+  margin-top: 20px;
+}
+
+.radio-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
