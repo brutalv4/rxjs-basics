@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app"></div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({
+                interval,
+                fromEvent,
+                operators: { concatMap, take },
+            }) {
+                const interval$ = interval(1000);
+                const click$ = fromEvent(document, 'click');
+
+                click$
+                    .pipe(
+                        /*
+                         * concat based operators are the 'single file line'
+                         * of operators, maintaining 1 active inner observable at
+                         * a time. For instance, in this example on the first click a new
+                         * interval observable will be subscribed to internally,
+                         * with any emitted values being emitted by concatMap.
+                         * If you click again while that inner interval
+                         * is active, the next interval will be queued until
+                         * the current active interval completes. At this point,
+                         * the next inner observable will be activated and so on...
+                         */
+                        concatMap(() => interval$.pipe(take(3)))
+                    )
+                    .subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>
