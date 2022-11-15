@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>RxJS Starter - Ultimate Courses</title>
+        <link href="../css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+            <p>
+                Start polling to request random
+                <a href="https://random.dog">dog</a> images!
+            </p>
+            <p>Polling Status: <span id="polling-status">Stopped</span></p>
+            <button id="start">Start Polling</button>
+            <button id="stop">Stop Polling</button>
+            <img
+                id="dog"
+                src="https://random.dog/10fa025a-b04a-47d7-bfed-98747269b6c2.jpg"
+                alt="A random dog"
+                style="
+                    display: block;
+                    margin: 2rem auto;
+                    max-width: auto;
+                    max-height: 400px;
+                "
+            />
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script src="index.js"></script>
+    </body>
+</html>
