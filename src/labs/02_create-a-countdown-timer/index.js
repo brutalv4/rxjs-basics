@@ -1,8 +1,10 @@
 (function ({
     interval,
     fromEvent,
-    operators: { scan, mapTo, takeWhile, tap, takeUntil },
+    operators: { scan, mapTo, takeWhile, tap, takeUntil, startWith },
 }) {
+    const COUNTDOWN_FROM = 10;
+
     // elements
     const countdownEl = document.querySelector('#countdown');
     const messageEl = document.querySelector('#message');
@@ -23,10 +25,15 @@
     counter$
         .pipe(
             mapTo(1),
-            scan((accumulator, one) => accumulator - one, 10),
+            scan((accumulator, one) => accumulator - one, COUNTDOWN_FROM),
             tap(console.log),
             takeWhile(value => value > 0, true),
-            takeUntil(abortClick$)
+            takeUntil(abortClick$),
+            /*
+             * With startWith, we can seed the stream with
+             * the starting countdown value.
+             */
+            startWith(COUNTDOWN_FROM)
         )
         .subscribe(render);
 })(rxjs);
