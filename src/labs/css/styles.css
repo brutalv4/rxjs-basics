@@ -91,37 +91,34 @@ body {
     font-size: 32px;
 }
 
-#abort {
-    background: red;
-    color: white;
+.btn {
     border-radius: 4px;
     padding: 8px 16px;
     margin-top: 10px;
 }
 
-input[type=text] {
-  margin: 20px auto;
-  border-radius: 4px;
-  height:20px;
-  width:150px;
-  padding: 5px;
-  border: 1px solid black;
-  font-size:16px;
+input[type='text'] {
+    margin: 20px auto;
+    border-radius: 4px;
+    height: 20px;
+    width: 150px;
+    padding: 5px;
+    border: 1px solid black;
+    font-size: 16px;
 }
 
 p {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .radio-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .form-group {
     margin-bottom: 1rem;
-
 }
 
 .form-group label {
@@ -130,16 +127,21 @@ p {
     font-weight: 900;
 }
 
-button#start, button#stop {
+button#start,
+button#stop,
+button#pause {
     color: #fff;
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
 }
 
 button#start {
     background: green;
 }
 
-button#stop {
+button#stop,
+button#abort,
+button#pause {
     background: red;
+    color: white;
 }

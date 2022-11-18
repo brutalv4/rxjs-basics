@@ -1,34 +1,46 @@
 (function ({
     interval,
     fromEvent,
-    operators: { scan, mapTo, takeWhile, tap, takeUntil, startWith },
+    merge,
+    EMPTY,
+    operators: { scan, mapTo, takeWhile, tap, startWith, switchMap },
 }) {
     const COUNTDOWN_FROM = 10;
 
-    // elements
-    const countdownEl = document.querySelector('#countdown');
-    const messageEl = document.querySelector('#message');
-    const abortBtn = document.querySelector('#abort');
+    // elem refs
+    const countdown = document.getElementById('countdown');
+    const message = document.getElementById('message');
+    const pauseButton = document.getElementById('pause');
+    const startButton = document.getElementById('start');
 
     // helpers
     function render(count) {
-        countdownEl.innerHTML = count;
+        countdown.innerHTML = count;
 
         if (count === 0) {
-            messageEl.innerHTML = 'Liftoff!';
+            message.innerHTML = 'Liftoff!';
         }
     }
 
     // streams
-    const abortClick$ = fromEvent(abortBtn, 'click');
     const counter$ = interval(1000);
-    counter$
+    const pauseClick$ = fromEvent(pauseButton, 'click');
+    const startClick$ = fromEvent(startButton, 'click');
+
+    merge(startClick$.pipe(mapTo(true)), pauseClick$.pipe(mapTo(false)))
         .pipe(
+            /*
+             * Depending on whether start or pause was clicked,
+             * we'll either switch to the interval observable,
+             * or to an empty observable which will act as a pause.
+             */
+            switchMap(shouldStart => {
+                return shouldStart ? counter$ : EMPTY;
+            }),
             mapTo(1),
             scan((accumulator, one) => accumulator - one, COUNTDOWN_FROM),
             tap(console.log),
             takeWhile(value => value > 0, true),
-            takeUntil(abortClick$),
             /*
              * With startWith, we can seed the stream with
              * the starting countdown value.
