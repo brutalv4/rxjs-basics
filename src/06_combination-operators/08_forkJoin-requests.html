@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>merge|RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({ forkJoin, combineLatest, ajax: { ajax } }) {
+                const GITHUB_API_BASE = 'https://api.github.com';
+
+                /*
+                 * forkJoin waits for all inner observables to complete
+                 * before emitting the last emitted value of each.
+                 * The use cases for forkJoin are generally similar to
+                 * Promise.all
+                 */
+                forkJoin({
+                    user: ajax.getJSON(`${GITHUB_API_BASE}/users/brutalv4`),
+                    repo: ajax.getJSON(
+                        `${GITHUB_API_BASE}/users/brutalv4/repos`
+                    ),
+                }).subscribe(console.log);
+
+                /*
+                 * You can also pass in comma seperated arugments and
+                 * receieve an array in return. This is the only option if
+                 * you are using less than RxJS 6.5
+                 */
+
+                // forkJoin(
+                //   ajax.getJSON(`${GITHUB_API_BASE}/users/reactivex`),
+                //   ajax.getJSON(`${GITHUB_API_BASE}/users/reactivex/repos`)
+                // ).subscribe(([user, repos]) => {
+                //   // perform action
+                // });
+            })(rxjs);
+        </script>
+    </body>
+</html>
