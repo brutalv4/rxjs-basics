@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>merge|RxJS Starter - Ultimate Courses</title>
+        <link href="../labs/css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-ultimate"></div>
+                <p class="logo-name">Ultimate Courses<span>&trade;</span></p>
+            </div>
+        </header>
+        <div id="app">
+            <h1>Ultimate RxJS</h1>
+            <div class="input-wrapper">
+                <input type="number" id="first" />
+                <input type="number" id="second" />
+            </div>
+        </div>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.5.7/rxjs.umd.min.js"
+            integrity="sha512-MiYwnEfEqT5G1xAVakQk02nQONtyt4KfpD0FmOsmJcR1Xc5Ic1fhEm4piCH7fCtEKUJfCw6Q07IpsISlAePczQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            (function ({
+                fromEvent,
+                combineLatest,
+                operators: { map, filter },
+            }) {
+                // elems
+                const first = document.getElementById('first');
+                const second = document.getElementById('second');
+
+                // streams
+                const keyup$ = fromEvent(document, 'keyup');
+                const click$ = fromEvent(document, 'click');
+
+                // helpers
+                const keyupAsValue = elem => {
+                    return fromEvent(elem, 'keyup').pipe(
+                        map(event => event.target.valueAsNumber)
+                    );
+                };
+
+                /*
+                 * combineLatest is great when an element depends
+                 * on the combination of multiple streams to make
+                 * some calculation or determination. We will explore
+                 * this concept further in the next lab.
+                 */
+                combineLatest(keyupAsValue(first), keyupAsValue(second))
+                    .pipe(
+                        filter(([first, second]) => {
+                            return !isNaN(first) && !isNaN(second);
+                        }),
+                        map(([first, second]) => first + second)
+                    )
+                    .subscribe(console.log);
+            })(rxjs);
+        </script>
+    </body>
+</html>

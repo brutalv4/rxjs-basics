@@ -145,3 +145,7 @@ button#pause {
     background: red;
     color: white;
 }
+
+.input-wrapper {
+    margin-top: 20px;
+}
